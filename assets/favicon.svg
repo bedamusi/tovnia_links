@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="veqno" x1="10" y1="8" x2="54" y2="56" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#20c96b"/>
+      <stop offset=".48" stop-color="#087fc4"/>
+      <stop offset="1" stop-color="#064e91"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="16" fill="#f5f8fa"/>
+  <path d="M8 15h12l12 26 12-26h12L37 52H27L8 15Z" fill="url(#veqno)"/>
+  <path d="M43 23 58 14v20L43 25v-2Z" fill="#20c96b"/>
+</svg>

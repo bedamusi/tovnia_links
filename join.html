@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#f5f8fa" />
+  <meta name="description" content="Join a VeqnoLink meeting with an invitation link or room code." />
+  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg" />
+  <title>Join a meeting — VeqnoLink</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    :root{--join-green:#087fc4;--join-green-dark:#05649f;--join-ink:#10233b;--join-muted:#60748a;--join-line:#dce5ee;--join-pale:#f4f7fa;--join-mint:#e7f3fa}
+    body.join-page{min-height:100vh;background:var(--join-pale);color:var(--join-ink);font-family:"Plus Jakarta Sans",Inter,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+    .join-header{height:80px;padding:0 24px;background:#fff;border-bottom:1px solid var(--join-line)}
+    .join-header-inner{width:min(1280px,calc(100% - 64px));height:100%;margin:0 auto;display:flex;align-items:center;justify-content:space-between}
+    .join-header .brand{font-size:18px}
+    .join-home{display:inline-flex;align-items:center;gap:9px;color:#536172;font-size:14px;font-weight:600}
+    .join-home:hover{color:var(--join-green-dark)}
+    .join-home svg{width:18px;height:18px}
+    .join-main{min-height:calc(100vh - 80px);padding:52px 24px;display:grid;place-items:center}
+    .join-card{width:min(720px,100%);padding:40px;background:#fff;border:1px solid #dfe7ec;border-radius:16px;box-shadow:0 16px 40px rgba(31,54,72,.08)}
+    .join-symbol{width:50px;height:50px;display:grid;place-items:center;border:1px solid #ccefe1;border-radius:13px;background:var(--join-mint);color:var(--join-green-dark)}
+    .join-symbol svg{width:24px;height:24px}
+    .join-card h1{margin:28px 0 10px;color:var(--join-ink);font-size:34px;line-height:1.2;letter-spacing:-1px}
+    .join-lede{margin:0;color:#536172;font-size:16px;line-height:1.7}
+    .join-form{margin-top:38px}
+    .join-form label{display:block;margin-bottom:10px;font-size:14px;font-weight:700}
+    .join-row{display:grid;grid-template-columns:minmax(0,1fr) 112px;gap:12px}
+    .join-row input{width:100%;height:54px;padding:0 16px;border:1px solid #ccd8dd;border-radius:10px;background:#fff;color:var(--join-ink);font:400 15px "Plus Jakarta Sans",Inter,Arial,sans-serif}
+    .join-row input::placeholder{color:#98a3ad}
+    .join-row input:focus-visible{outline:3px solid rgba(22,183,131,.24);outline-offset:2px;border-color:var(--join-green)}
+    .join-submit{height:54px;display:inline-flex;align-items:center;justify-content:center;gap:9px;border:0;border-radius:10px;background:var(--join-green);color:#fff;font:700 15px "Plus Jakarta Sans",Inter,Arial,sans-serif;cursor:pointer;transition:background .18s ease,transform .18s ease}
+    .join-submit:hover{background:var(--join-green-dark);transform:translateY(-1px)}
+    .join-submit svg{width:18px;height:18px}
+    .join-example{margin:10px 0 0;color:#687585;font-size:13px;line-height:1.5}
+    .join-example code{font:inherit;color:var(--join-green-dark)}
+    .join-divider{height:1px;margin:32px 0 24px;background:var(--join-line)}
+    .join-note{display:flex;align-items:flex-start;gap:13px;color:#536172;font-size:14px;line-height:1.7}
+    .join-note svg{width:20px;height:20px;flex:0 0 auto;margin-top:2px;color:var(--join-green-dark)}
+    .join-error{margin:10px 0 0;color:#a44737;font-size:13px}
+    @media(max-width:640px){.join-header{height:68px;padding:0 18px}.join-header-inner{width:100%}.join-header .brand{font-size:17px}.join-main{min-height:calc(100vh - 68px);padding:24px 18px}.join-card{padding:25px 21px;border-radius:14px}.join-card h1{margin-top:22px;font-size:29px}.join-lede{font-size:14px}.join-form{margin-top:28px}.join-row{grid-template-columns:minmax(0,1fr) 94px;gap:8px}.join-row input{height:49px;padding:0 11px;font-size:13px}.join-submit{height:49px;font-size:14px}.join-divider{margin:25px 0 19px}.join-note{font-size:13px}}
+    @media(max-width:360px){.join-row{grid-template-columns:1fr}.join-submit{width:100%}}
+    /* Match dashboard page gutters and keep join controls easy to use on mobile. */
+    @media(max-width:640px){.join-header-inner{width:calc(100% - 40px)}.join-main{padding-inline:20px}.join-row{grid-template-columns:minmax(0,1fr) 100px;gap:10px}.join-row input{font-size:14px}.join-submit{font-size:14px}}
+    @media(max-width:380px){.join-header-inner{width:calc(100% - 32px)}.join-main{padding-inline:16px}.join-card{padding-inline:18px}.join-row{grid-template-columns:1fr}.join-submit{width:100%}}
+  </style>
+</head>
+<body class="join-page">
+  <header class="join-header"><div class="join-header-inner">
+    <a class="brand" href="/" aria-label="VeqnoLink home"><span class="veqno-mark" aria-hidden="true"><i></i><i></i><i></i></span><b>veqno<span>Link</span></b></a>
+    <a class="join-home" href="/"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M19 12H5m7 7-7-7 7-7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Home</span></a>
+  </div></header>
+  <main class="join-main">
+    <section class="join-card" aria-labelledby="join-title">
+      <span class="join-symbol" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M9.5 8.5 7.8 6.8a4.3 4.3 0 0 0-6.1 6.1l2.1 2.1a4.3 4.3 0 0 0 6.1 0l2-2m2.6 2.5 1.7 1.7a4.3 4.3 0 0 0 6.1-6.1l-2.1-2.1a4.3 4.3 0 0 0-6.1 0l-2 2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span>
+      <h1 id="join-title">Join a meeting</h1>
+      <p class="join-lede">Enter the room code from your invitation or paste the full meeting link.</p>
+      <form class="join-form" id="join-page-form">
+        <label for="join-code">Meeting link or code</label>
+        <div class="join-row"><input id="join-code" name="meeting" type="text" autocomplete="url" placeholder="link.veqno.com/r/azure-rain-72" required /><button class="join-submit" type="submit"><span>Join</span><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
+        <p class="join-example">Example room code: <code>azure-rain-72</code></p>
+        <p class="join-error" id="join-error" role="alert" hidden></p>
+      </form>
+      <div class="join-divider"></div>
+      <div class="join-note"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3 19 6v5c0 4.7-2.9 8-7 10-4.1-2-7-5.3-7-10V6l7-3Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="m9 12 2 2 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Guests never need an account. You can review your camera and microphone before entering the meeting.</span></div>
+    </section>
+  </main>
+  <script>
+    document.querySelector('#join-page-form').addEventListener('submit', (event) => {
+      event.preventDefault();
+      const value = document.querySelector('#join-code').value.trim();
+      const error = document.querySelector('#join-error');
+      const isUrl = /^https?:\/\//i.test(value);
+      const isRoomPath = /^(?:www\.)?link\.veqno\.com\//i.test(value);
+      if (isUrl) {
+        window.location.href = value;
+      } else if (isRoomPath) {
+        window.location.href = `https://${value}`;
+      } else if (/^[a-z0-9-]{3,80}$/i.test(value)) {
+        window.location.href = `https://link.veqno.com/r/${encodeURIComponent(value)}`;
+      } else {
+        error.textContent = 'Enter a valid meeting link or room code.';
+        error.hidden = false;
+      }
+    });
+  </script>
+</body>
+</html>

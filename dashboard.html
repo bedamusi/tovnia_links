@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#ffffff" />
+  <meta name="description" content="Manage your VeqnoLink meetings." />
+  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg" />
+  <title>Meetings — VeqnoLink</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    :root{--dash-green:#087fc4;--dash-green-dark:#05649f;--dash-ink:#10233b;--dash-body:#60748a;--dash-line:#dce5ee;--dash-pale:#f4f7fa;--dash-mint:#e7f3fa}
+    body.meetings-page{min-height:100vh;background:var(--dash-pale);color:var(--dash-ink);font-family:"Plus Jakarta Sans",Inter,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+    .meetings-header{height:91px;padding:0 24px;background:#fff;border-bottom:1px solid #e2e8ec}
+    .meetings-header-inner{width:min(1280px,calc(100% - 64px));height:100%;margin:0 auto;display:flex;align-items:center;gap:38px}
+    .meetings-brand{color:var(--dash-ink)}
+    .meetings-nav{height:46px;padding:0 17px;display:flex;align-items:center;border-radius:10px;background:var(--dash-mint);color:var(--dash-green-dark);font-size:14px;font-weight:700}
+    .host-mode{margin-left:auto;height:50px;padding:0 17px;display:flex;align-items:center;gap:11px;border:1px solid #d9e3e8;border-radius:11px;background:#fff;color:#536172;font-size:13px;font-weight:600}
+    .host-mode svg{width:18px;height:18px;color:var(--dash-green-dark)}
+    .meetings-main{width:min(1280px,calc(100% - 112px));margin:0 auto;padding:36px 0 44px}
+    .meetings-intro{min-height:126px;margin-bottom:23px;display:flex;align-items:flex-start;justify-content:space-between;gap:22px}
+    .meetings-intro-copy p{margin:0 0 7px;color:#536172;font-size:15px;font-weight:500}
+    .meetings-intro h1{margin:0;color:var(--dash-ink);font-size:32px;line-height:1.2;letter-spacing:-1px}
+    .meetings-intro-copy>span{display:block;max-width:660px;margin-top:8px;color:#536172;font-size:14px;line-height:1.6}
+    .meeting-action{min-height:52px;padding:0 26px;display:inline-flex;align-items:center;justify-content:center;gap:12px;border:0;border-radius:12px;background:var(--dash-green);color:#fff;font:700 14px "Plus Jakarta Sans",Inter,Arial,sans-serif;white-space:nowrap;box-shadow:0 8px 18px rgba(22,183,131,.17);transition:background .18s ease,transform .18s ease}
+    .meetings-intro>.meeting-action{align-self:flex-end;margin-bottom:0}
+    .meeting-action:hover{background:var(--dash-green-dark);transform:translateY(-1px)}
+    .meeting-action:focus-visible,.invitation-card input:focus-visible,.host-mode:focus-visible{outline:3px solid rgba(22,183,131,.28);outline-offset:3px}
+    .meeting-action svg{width:19px;height:19px}
+    .invitation-card{min-height:176px;padding:22px 30px;display:grid;grid-template-columns:minmax(0,.725fr) minmax(0,1.275fr);align-items:center;gap:0;background:#fff;border:1px solid #dfe7ec;border-radius:15px;box-shadow:0 2px 4px rgba(31,54,72,.025)}
+    .invitation-copy{min-width:0}
+    .invitation-icon,.empty-calendar{width:50px;height:50px;display:grid;place-items:center;border-radius:12px;background:var(--dash-mint);color:var(--dash-green-dark)}
+    .invitation-icon svg,.empty-calendar svg{width:24px;height:24px}
+    .invitation-copy h2{margin:16px 0 7px;color:var(--dash-ink);font-size:19px;line-height:1.3;letter-spacing:-.35px}
+    .invitation-copy p{margin:0;color:#536172;font-size:14px;line-height:1.65}
+    .invitation-form{display:grid;grid-template-columns:minmax(0,1fr) 208px;gap:14px;align-items:center}
+    .invitation-form input{width:100%;height:55px;padding:0 19px;border:1px solid #ccd8dd;border-radius:12px;background:#fff;color:#536172;font:400 14px "Plus Jakarta Sans",Inter,Arial,sans-serif;box-shadow:0 2px 4px rgba(31,54,72,.05)}
+    .invitation-form input::placeholder{color:#98a3ad}
+    .join-action{min-height:55px;padding:0 18px;display:inline-flex;align-items:center;justify-content:center;gap:15px;border:1px solid #ccd8dd;border-radius:12px;background:#fff;color:var(--dash-ink);font:600 14px "Plus Jakarta Sans",Inter,Arial,sans-serif;white-space:nowrap;transition:background .18s ease,border-color .18s ease}
+    .join-action:hover{background:var(--dash-mint);border-color:#b8e5d4}
+    .join-action svg{width:19px;height:19px;color:var(--dash-green-dark)}
+    .saved-meetings{margin-top:33px}
+    .saved-meetings-heading h2{margin:0;color:var(--dash-ink);font-size:21px;line-height:1.3;letter-spacing:-.4px}
+    .saved-meetings-heading p{margin:7px 0 0;color:#536172;font-size:14px;line-height:1.6}
+    .empty-meetings{min-height:324px;margin-top:17px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;text-align:center;border:1px dashed #cbd8dd;border-radius:15px;background:#fff}
+    .empty-calendar{width:60px;height:60px;border-radius:15px}
+    .empty-meetings h3{margin:15px 0 8px;color:var(--dash-ink);font-size:17px;line-height:1.4}
+    .empty-meetings p{max-width:550px;margin:0;color:#536172;font-size:14px;line-height:1.65}
+    .empty-meetings .meeting-action{margin-top:18px;min-width:178px}
+    .meeting-modal{width:min(840px,calc(100vw - 36px));height:min(890px,calc(100dvh - 72px));max-width:none;max-height:calc(100dvh - 72px);padding:0;border:1px solid #dfe7ec;border-radius:17px;background:#fff;color:var(--dash-ink);box-shadow:0 24px 70px rgba(31,54,72,.24);overflow:hidden}
+    .meeting-modal[open]{display:flex;flex-direction:column}
+    .meeting-modal>form{display:flex;flex:1;flex-direction:column;min-height:0;overflow:hidden}
+    .meeting-modal::backdrop{background:rgba(38,49,64,.58);backdrop-filter:blur(4px)}
+    .meeting-modal-header{flex:0 0 auto;display:flex;justify-content:space-between;align-items:flex-start;padding:24px 20px 20px;border-bottom:1px solid var(--dash-line)}
+    .meeting-modal-header h2{margin:0 0 5px;font-size:24px;line-height:1.3;letter-spacing:-.5px}
+    .meeting-modal-header p{margin:0;color:#536172;font-size:14px;line-height:1.5}
+    .modal-close{width:36px;height:36px;display:grid;place-items:center;border:0;border-radius:8px;background:transparent;color:#536172;font-size:25px;line-height:1;cursor:pointer}
+    .modal-close:hover{background:var(--dash-mint);color:var(--dash-green-dark)}
+    .meeting-modal-body{flex:1 1 auto;min-height:0;overflow-y:auto;padding:22px 20px 20px;scrollbar-color:#b5c8c1 #f4f7f6;scrollbar-width:thin}
+    .modal-label{display:block;margin:0 0 10px;font-size:15px;font-weight:600}
+    .meeting-types{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-bottom:24px}
+    .meeting-type{min-height:116px;padding:14px;border:1px solid #d9e3e8;border-radius:12px;background:#fff;cursor:pointer;transition:background .15s ease,border-color .15s ease}
+    .meeting-type:has(input:checked){border-color:var(--dash-green);background:var(--dash-mint);box-shadow:0 0 0 1px var(--dash-green)}
+    .meeting-type input{position:absolute;width:1px;height:1px;opacity:0}
+    .meeting-type:focus-within{outline:3px solid rgba(22,183,131,.25);outline-offset:2px}
+    .meeting-type svg{display:block;width:20px;height:20px;margin-bottom:9px;color:var(--dash-green-dark)}
+    .meeting-type b{display:block;margin-bottom:5px;font-size:15px}
+    .meeting-type small{display:block;color:#536172;font-size:13px;line-height:1.55}
+    .modal-field{display:block;margin-bottom:19px}
+    .modal-field>span{display:block;margin-bottom:9px;font-size:15px;font-weight:600}
+    .modal-field input,.modal-field select{width:100%;height:48px;padding:0 15px;border:1px solid #ccd8dd;border-radius:10px;background:#fff;color:var(--dash-ink);font:400 14px "Plus Jakarta Sans",Inter,Arial,sans-serif}
+    .modal-field input::placeholder{color:#98a3ad}
+    .modal-toggles{margin-bottom:20px;padding:0 17px;border:1px solid #d9e3e8;border-radius:12px}
+    .setting-row{min-height:60px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+    .setting-row+ .setting-row{border-top:1px solid #e6ecef}
+    .setting-row b{display:block;margin-bottom:3px;font-size:14px;font-weight:600}
+    .setting-row small{display:block;color:#536172;font-size:12px;line-height:1.4}
+    .setting-row input{position:absolute;width:1px;height:1px;opacity:0}
+    .toggle{width:48px;height:28px;flex:0 0 auto;padding:3px;border-radius:99px;background:#e6ecef;border:1px solid #cbd8dd;transition:background .18s ease}
+    .toggle::after{content:"";display:block;width:20px;height:20px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(31,54,72,.18);transition:transform .18s ease}
+    .setting-row input:checked+.toggle{background:var(--dash-green);border-color:var(--dash-green)}
+    .setting-row input:checked+.toggle::after{transform:translateX(20px)}
+    .setting-row input:focus-visible+.toggle{outline:3px solid rgba(22,183,131,.25);outline-offset:2px}
+    .reusable-link-setting.is-required{justify-content:flex-start;gap:14px}
+    .reusable-link-setting.is-required::before{content:"✓";width:15px;flex:0 0 15px;color:var(--dash-green-dark);font-size:17px;font-weight:700;text-align:center}
+    .reusable-link-setting.is-required .toggle{display:none}
+    .modal-options-grid{display:grid;grid-template-columns:minmax(0,1fr) 150px;gap:20px}
+    .modal-password-hint{font-weight:400;color:#687585}
+    .capacity-hint{display:block;margin:-4px 0 8px;color:#687585;font-size:12px}
+    .modal-notice{display:flex;align-items:flex-start;gap:12px;margin-top:2px;padding:14px;border:1px solid #bde9d8;border-radius:10px;background:#f0faf6;color:#426358;font-size:13px;line-height:1.55}
+    .modal-notice svg{width:19px;height:19px;flex:0 0 auto;color:var(--dash-green-dark)}
+    .schedule-fields[hidden]{display:none}
+    .meeting-modal-footer{flex:0 0 auto;display:flex;justify-content:flex-end;gap:10px;padding:15px 20px;border-top:1px solid var(--dash-line);background:#fff}
+    .modal-secondary,.modal-primary{min-height:42px;padding:0 17px;border-radius:9px;font:600 13px "Plus Jakarta Sans",Inter,Arial,sans-serif;cursor:pointer}
+    .modal-secondary{border:1px solid #d1dce0;background:#fff;color:#536172}
+    .modal-primary{border:1px solid var(--dash-green);background:var(--dash-green);color:#fff}
+    .modal-primary:hover{background:var(--dash-green-dark);border-color:var(--dash-green-dark)}
+    @media(max-width:600px){.meeting-modal{width:calc(100vw - 24px);height:calc(100dvh - 24px);max-height:calc(100dvh - 24px);border-radius:14px}.meeting-modal-header{padding:19px 16px 15px}.meeting-modal-header h2{font-size:20px}.meeting-modal-body{padding:18px 16px}.meeting-types{grid-template-columns:1fr;gap:8px;margin-bottom:19px}.meeting-type{min-height:0;padding:11px 13px}.meeting-type svg{margin-bottom:5px}.modal-label,.modal-field>span{font-size:14px}.modal-options-grid{grid-template-columns:1fr;gap:0}.meeting-modal-footer{padding:12px 16px}.modal-notice{font-size:12px}}
+    @media(max-width:760px){.meetings-header{height:72px;padding:0 18px}.meetings-header-inner{width:calc(100% - 28px);gap:14px}.meetings-brand{font-size:17px}.meetings-brand .veqno-mark{transform:scale(.9) skew(-13deg);transform-origin:left center}.meetings-nav{height:40px;padding:0 13px;font-size:13px}.host-mode{height:42px;padding:0 11px;font-size:11px}.host-mode svg{width:16px;height:16px}.meetings-main{width:calc(100% - 64px);padding:24px 0 36px}.meetings-intro{min-height:0;align-items:flex-start;flex-direction:column;gap:14px;margin-bottom:20px}.meetings-intro>.meeting-action{align-self:flex-start}.meetings-intro h1{font-size:27px}.meetings-intro-copy p{font-size:13px}.meetings-intro-copy>span{font-size:13px;line-height:1.6}.meeting-action{min-height:46px;padding:0 18px;font-size:13px}.invitation-card{grid-template-columns:1fr;gap:17px;padding:18px}.invitation-copy h2{margin-top:13px;font-size:18px}.invitation-copy p,.saved-meetings-heading p,.empty-meetings p{font-size:13px}.invitation-form{grid-template-columns:minmax(0,1fr) auto;gap:9px}.invitation-form input{height:47px;padding:0 12px;font-size:12px}.join-action{min-height:47px;padding:0 12px;gap:8px;font-size:12px}.saved-meetings{margin-top:28px}.saved-meetings-heading h2{font-size:20px}.empty-meetings{min-height:270px;margin-top:16px;padding:22px}.empty-meetings h3{font-size:15px}}
+    @media(max-width:430px){.meetings-header-inner{gap:10px}.meetings-brand{font-size:15px}.meetings-brand .veqno-mark{transform:scale(.78) skew(-13deg);transform-origin:left center}.meetings-nav{font-size:11px;padding:0 10px}.host-mode{gap:6px;padding:0 8px;font-size:9px}.invitation-form{grid-template-columns:1fr}.join-action{width:100%}.empty-meetings{padding:24px 18px}}
+    /* Keep the dashboard's page gutters and controls comfortable on phones. */
+    @media(max-width:760px){.meetings-header-inner{width:calc(100% - 40px)}.meetings-main{width:calc(100% - 40px)}}
+    @media(max-width:430px){.meetings-header-inner{width:calc(100% - 32px)}.meetings-main{width:calc(100% - 32px)}.meetings-header{padding-inline:12px}.host-mode{font-size:10px}.meetings-intro-copy p,.meetings-intro-copy>span,.invitation-copy p,.saved-meetings-heading p,.empty-meetings p{font-size:14px}.invitation-form input,.join-action{font-size:14px}}
+  </style>
+</head>
+<body class="meetings-page">
+  <header class="meetings-header">
+    <div class="meetings-header-inner">
+      <a class="brand meetings-brand" href="/" aria-label="VeqnoLink home">
+        <span class="veqno-mark" aria-hidden="true"><i></i><i></i><i></i></span>
+        <b>veqno<span>Link</span></b>
+      </a>
+      <a class="meetings-nav" href="/dashboard" aria-current="page">Meetings</a>
+      <div class="host-mode" aria-label="Local host mode">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="1.8"/><path d="M4.5 20v-1.4a7.5 7.5 0 0 1 15 0V20" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span>Local host mode</span>
+      </div>
+    </div>
+  </header>
+  <main class="meetings-main">
+    <section class="meetings-intro" aria-labelledby="meetings-title">
+      <div class="meetings-intro-copy">
+        <p>Good morning</p>
+        <h1 id="meetings-title">Your meetings</h1>
+        <span>Start a new room or return to a meeting whose host access is saved in this browser.</span>
+      </div>
+      <button class="meeting-action" type="button" data-open-create-meeting>
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="6" width="13" height="12" rx="2" stroke="currentColor" stroke-width="1.8"/><path d="m16 10 5-3v10l-5-3" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+        <span>New meeting</span>
+      </button>
+    </section>
+    <section class="invitation-card" aria-labelledby="invitation-title">
+      <div class="invitation-copy">
+        <span class="invitation-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M10 13.5a4.5 4.5 0 0 0 6.36 0l3-3a4.5 4.5 0 0 0-6.36-6.36l-1.72 1.72M14 10.5a4.5 4.5 0 0 0-6.36 0l-3 3A4.5 4.5 0 0 0 11 19.86l1.72-1.72" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+        <h2 id="invitation-title">Have an invitation?</h2>
+        <p>Paste the meeting link or enter the room code.</p>
+      </div>
+      <form class="invitation-form" id="join-meeting-form">
+        <input id="meeting-address" name="meeting" type="text" autocomplete="url" placeholder="link.veqno.com/r/azure-rain-72" aria-label="Meeting link or room code" />
+        <button class="join-action" type="submit"><span>Join meeting</span><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      </form>
+    </section>
+    <section class="saved-meetings" aria-labelledby="saved-title">
+      <div class="saved-meetings-heading">
+        <h2 id="saved-title">Meeting links</h2>
+        <p>Upcoming meetings and host access saved on this device.</p>
+      </div>
+      <div class="empty-meetings">
+        <span class="empty-calendar" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><rect x="3.5" y="5" width="17" height="16" rx="2" stroke="currentColor" stroke-width="1.8"/><path d="M7.5 3v4m9-4v4M4 9h16M8 13h.01M12 13h.01M16 13h.01M8 17h.01M12 17h.01M16 17h.01" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span>
+        <h3>No saved meetings yet</h3>
+        <p>Create a room and its host access will be saved in this browser<br class="desktop-break" /> for a faster return.</p>
+        <button class="meeting-action" type="button" data-open-create-meeting>New meeting</button>
+      </div>
+    </section>
+  </main>
+  <dialog class="meeting-modal" id="create-meeting-modal" aria-labelledby="create-meeting-title" aria-describedby="create-meeting-description">
+    <form id="create-meeting-form">
+      <header class="meeting-modal-header">
+        <div><h2 id="create-meeting-title">Create a meeting</h2><p id="create-meeting-description">Choose when you want to use the room.</p></div>
+        <button class="modal-close" type="button" aria-label="Close dialog" data-close-create-meeting>×</button>
+      </header>
+      <div class="meeting-modal-body">
+        <fieldset style="border:0;padding:0;margin:0">
+          <legend class="modal-label">When should this meeting happen?</legend>
+          <div class="meeting-types">
+            <label class="meeting-type"><input type="radio" name="meeting-time" value="now" checked /><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m8 5 11 7-11 7V5Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg><b>Start now</b><small>Create and enter the room.</small></label>
+            <label class="meeting-type"><input type="radio" name="meeting-time" value="later" /><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9.5 8.5 7.8 6.8a4.3 4.3 0 0 0-6.1 6.1l2.1 2.1a4.3 4.3 0 0 0 6.1 0l2-2m2.6 2.5 1.7 1.7a4.3 4.3 0 0 0 6.1-6.1l-2.1-2.1a4.3 4.3 0 0 0-6.1 0l-2 2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><b>Create for later</b><small>Make a reusable link.</small></label>
+            <label class="meeting-type"><input type="radio" name="meeting-time" value="schedule" /><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2" stroke="currentColor" stroke-width="1.8"/><path d="M7 3v4m10-4v4M3 9h18m-13 4h.01M12 13h.01M16 13h.01M8 17h.01M12 17h.01" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><b>Schedule</b><small>Add a date and calendar invite.</small></label>
+          </div>
+        </fieldset>
+        <label class="modal-field"><span>Meeting name</span><input name="meeting-name" type="text" placeholder="e.g. Weekly leadership sync" /></label>
+        <div class="schedule-fields" hidden>
+          <label class="modal-field"><span>Date and time</span><small class="capacity-hint">Times use your browser’s <span data-time-zone></span> timezone.</small><input name="meeting-date-time" type="datetime-local" /></label>
+        </div>
+        <div class="modal-toggles">
+          <label class="setting-row"><span><b>Waiting room</b><small>Review every guest before they enter.</small></span><input type="checkbox" name="waiting-room" checked /><i class="toggle" aria-hidden="true"></i></label>
+          <label class="setting-row reusable-link-setting"><span><b>Reusable meeting link</b><small data-reusable-note>Keep the same room link for future sessions.</small></span><input type="checkbox" name="reusable-link" /><i class="toggle" aria-hidden="true"></i></label>
+        </div>
+        <div class="modal-options-grid">
+          <label class="modal-field"><span>Meeting password <span class="modal-password-hint">(optional)</span></span><input name="meeting-password" type="password" placeholder="No password" /></label>
+          <label class="modal-field"><span>Capacity</span><small class="capacity-hint">2–100 people</small><input name="capacity" type="number" min="2" max="100" value="100" /></label>
+        </div>
+        <div class="modal-notice"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="5" y="10" width="14" height="11" rx="2" stroke="currentColor" stroke-width="1.8"/><path d="M8 10V7a4 4 0 1 1 8 0v3m-4 4v3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><span>Waiting rooms are enabled by default. Add a password when the link may be shared beyond the intended group.</span></div>
+      </div>
+      <footer class="meeting-modal-footer"><button class="modal-secondary" type="button" data-close-create-meeting>Cancel</button><button class="modal-primary" type="submit"><svg data-submit-icon viewBox="0 0 24 24" width="17" height="17" fill="none" aria-hidden="true"><path d="M8 5 19 12 8 19V5Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg><span data-submit-label>Start meeting</span></button></footer>
+    </form>
+  </dialog>
+  <script>
+    const meetingModal = document.querySelector('#create-meeting-modal');
+    const scheduleFields = meetingModal.querySelector('.schedule-fields');
+    const reusableLinkSetting = meetingModal.querySelector('.reusable-link-setting');
+    const reusableLinkInput = reusableLinkSetting.querySelector('input');
+    const reusableLinkNote = reusableLinkSetting.querySelector('[data-reusable-note]');
+    meetingModal.querySelector('[data-time-zone]').textContent = Intl.DateTimeFormat().resolvedOptions().timeZone || 'local';
+    const submitLabel = meetingModal.querySelector('[data-submit-label]');
+    const submitIcon = meetingModal.querySelector('[data-submit-icon]');
+    const openMeetingModal = () => {
+      meetingModal.showModal();
+      meetingModal.querySelector('.meeting-modal-body').scrollTop = 0;
+      meetingModal.querySelector('.modal-close').focus({ preventScroll: true });
+    };
+    document.querySelectorAll('[data-open-create-meeting]').forEach((button) => button.addEventListener('click', openMeetingModal));
+    document.querySelectorAll('[data-close-create-meeting]').forEach((button) => button.addEventListener('click', () => meetingModal.close()));
+    meetingModal.addEventListener('click', (event) => {
+      if (event.target === meetingModal) meetingModal.close();
+    });
+    meetingModal.querySelectorAll('input[name="meeting-time"]').forEach((input) => input.addEventListener('change', () => {
+      const mode = meetingModal.querySelector('input[name="meeting-time"]:checked').value;
+      scheduleFields.hidden = mode !== 'schedule';
+      const isReusable = mode !== 'now';
+      reusableLinkInput.checked = isReusable;
+      reusableLinkInput.disabled = isReusable;
+      reusableLinkSetting.classList.toggle('is-required', isReusable);
+      reusableLinkNote.textContent = isReusable ? 'Enabled for meetings you use later.' : 'Keep the same room link for future sessions.';
+      submitLabel.textContent = isReusable ? 'Create link' : mode === 'schedule' ? 'Schedule meeting' : 'Start meeting';
+      submitIcon.innerHTML = isReusable
+        ? '<path d="M9.5 8.5 7.8 6.8a4.3 4.3 0 0 0-6.1 6.1l2.1 2.1a4.3 4.3 0 0 0 6.1 0l2-2m2.6 2.5 1.7 1.7a4.3 4.3 0 0 0 6.1-6.1l-2.1-2.1a4.3 4.3 0 0 0-6.1 0l-2 2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>'
+        : mode === 'schedule'
+          ? '<rect x="3" y="5" width="18" height="16" rx="2" stroke="currentColor" stroke-width="1.8"/><path d="M7 3v4m10-4v4M3 9h18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>'
+          : '<path d="M8 5 19 12 8 19V5Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>';
+    }));
+    document.querySelector('#create-meeting-form').addEventListener('submit', (event) => {
+      event.preventDefault();
+      meetingModal.close();
+    });
+    document.querySelector('#join-meeting-form').addEventListener('submit', (event) => {
+      event.preventDefault();
+      const value = document.querySelector('#meeting-address').value.trim();
+      if (!value) {
+        document.querySelector('#meeting-address').focus();
+        return;
+      }
+      const isUrl = /^https?:\/\//i.test(value);
+      const target = isUrl ? value : `https://link.veqno.com/r/${encodeURIComponent(value)}`;
+      window.location.href = target;
+    });
+  </script>
+</body>
+</html>
